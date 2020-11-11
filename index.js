@@ -6,12 +6,8 @@ const port = 3000;
 const express = require('express');
 const app = express();
 
-const es6Renderer = require('express-es6-template-engine');
 // Defining the template engine
-app.engine('html', es6Renderer);
-// Set up a "views" directory
-app.set('views', 'views');
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 
 const server = http.createServer(app);
 
@@ -24,13 +20,8 @@ app.get('/', (req, res) => {
     // to look into the templates directory
     // for a view named 'home', and process it 
     // with our rendering engine
-    res.render('home', {
-        locals: {
-            title: 'Address Book'
-        },
-        partials: {
-            head: '/partials/head'
-        }
+    res.render('pages/home', {
+        title: 'Address Book'
     });
 })
 
@@ -40,14 +31,9 @@ app.get('/friends', (req, res) => {
         return `<li>${friend.name}</li>`
     }).join('');
 
-    res.render('friends-list', {
-        locals: {
-            friendsListHtml,
-            title: 'Friends List'
-        },
-        partials: {
-            head: '/partials/head'
-        }
+    res.render('pages/friends-list', {
+        friendsListHtml,
+        title: 'Friends List'
     })
  
 })
@@ -62,14 +48,9 @@ app.get('/friends/:handle', (req, res, next) => {
         next();
     }
 
-    res.render('friend', {
-        locals: {
-            friend: friend,
-            title: `${friend.name}'s Profile Page`
-        },
-        partials: {
-            head: '/partials/head'
-        }
+    res.render('pages/friend', {
+        friend: friend,
+        title: `${friend.name}'s Profile Page`
     });
     
 })
